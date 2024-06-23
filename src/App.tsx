@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <div>
-        <h1 className="text-4xl font-bold text-center mb-5">AutoComplete!</h1>
+        <h1 className="text-5xl font-bold text-center mb-5">AutoComplete!</h1>
         <div className="flex flex-row space-x-3">
           <AutoComplete
           description='With default display and search on focus'

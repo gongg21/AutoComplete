@@ -51,12 +51,15 @@ const AutoComplete = (props: {
         return (
         <div 
             key={index}
-            ref={(el) => index && (optionRefs.current[index] = el)}
+            ref={(el) => index != undefined && (optionRefs.current[index] = el)}
             onClick={() => handleValueChange(option)}
             onMouseDown={(e) => e.preventDefault()}
-            onMouseEnter={() => index && setFocusedOption(index)}
-            className={"flex flex-row cursor-pointer pt-2 pb-2 hover:bg-blue-100 items-center justify-between "
-                + (index && focusedOption != null && index == focusedOption ? 'bg-blue-100' : 'bg-gray-50')}
+            onMouseEnter={() => index != undefined && setFocusedOption(index)}
+            className={
+                "flex flex-row pt-2 pb-2 items-center justify-between "
+                + (index != undefined ? 'cursor-pointer ' : '')
+                + (index == focusedOption ? 'bg-blue-100' : 'bg-gray-50')
+            }
         >
             <p className="font-sans font-s text-gray-500 justify-center pl-3">{item}</p>
             { option &&
@@ -65,7 +68,7 @@ const AutoComplete = (props: {
             >
                 <input
                     type="checkbox"
-                    className="cursor-pointer form-checkbox h-7 w-7 text-gray-600 rounded border-gray-300 focus:ring-gray-500"
+                    className="cursor-pointer form-checkbox h-7 w-7"
                     checked={Array.isArray(selectedOptions) ? selectedOptions.includes(option) : selectedOptions == option}
                 />
             </div>
@@ -98,14 +101,12 @@ const AutoComplete = (props: {
     
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key == 'ArrowDown') {
-            event.preventDefault();
             setFocusedOption(prevIndex =>
                 prevIndex == null || prevIndex == filteredOptions.length - 1
                 ? 0
                 : prevIndex + 1
             );
         } else if (event.key == 'ArrowUp') {
-            event.preventDefault();
             setFocusedOption(prevIndex =>
                 prevIndex == null || prevIndex == 0
                 ? filteredOptions.length - 1
@@ -134,11 +135,11 @@ const AutoComplete = (props: {
     }, [searchTerm, props.options, props.filterOptions]);
     
     useEffect(() => {
-        if (focusedOption !== null && optionRefs.current[focusedOption]) {
-        optionRefs.current[focusedOption]?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-        });
+        if (focusedOption != null && optionRefs.current[focusedOption]) {
+            optionRefs.current[focusedOption]?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+            });
         }
     }, [focusedOption]);
 
